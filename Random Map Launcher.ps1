@@ -20,6 +20,7 @@ else
 }
 
 $mods_array = Get-ChildItem -Path $mods_path -Name
+Write-Host -ForegroundColor Gray -Object (' {{ Mods Found: ' + $mods_array.Length + '}} ')
 $wait = 'n'
 
 while($wait -ne 'q')
