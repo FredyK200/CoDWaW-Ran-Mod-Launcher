@@ -1,7 +1,33 @@
 ﻿# Call of Duty: World At War Random Mod Launcher
 # Written By: Kane Eder
 
+# ==============================================
+#                   Initializing
+# ==============================================
+$global:mods_path=""
+$global:launcher_path=""
+$global:initial_process_path=""
+$global:mods_array=@{}
+$global:initial_process_path = Get-Location
 
+Add-Type -AssemblyName System.Windows.Forms
+
+if(Test-Path "$global:initial_process_path\RMLDATA.txt")
+{
+    Read-File
+}
+else
+{
+        #Get Folder Paths & Mod Names
+    $global:mods_path = Read-Host -Prompt ('Path of your WAW mods Folder') 
+    $global:launcher_path = Read-Host -Prompt ('Path of your WAW exe') 
+    $mod_array = Get-ChildItem -Path $global:mods_path -Name  | sort lastwritetime
+    foreach($mod in $mod_array)
+    {
+        $global:mods_array[$mod] = 1  
+    }
+    #cls
+}
 
 # ==============================================
 #                 Functions
@@ -64,36 +90,9 @@ Function Get-Weighted-Random
 }
 
 
-
 # ==============================================
-#                   Initializing
+#                 Launch Mod
 # ==============================================
-$global:mods_path=""
-$global:launcher_path=""
-$global:initial_process_path=""
-$global:mods_array=@{}
-$global:initial_process_path = Get-Location
-
-Add-Type -AssemblyName System.Windows.Forms
-
-if(Test-Path "$global:initial_process_path\RMLDATA.txt")
-{
-    Read-File
-}
-else
-{
-        #Get Folder Paths & Mod Names
-    $global:mods_path = Read-Host -Prompt ('Path of your WAW mods Folder') 
-    $global:launcher_path = Read-Host -Prompt ('Path of your WAW exe') 
-    $mod_array = Get-ChildItem -Path $global:mods_path -Name  | sort lastwritetime
-    foreach($mod in $mod_array)
-    {
-        $global:mods_array[$mod] = 1  
-    }
-    #cls
-}
-
-# Launch New Mod
 $waw = Get-Process -Name CoDWaW -ErrorAction SilentlyContinue
 if($waw)
 {
